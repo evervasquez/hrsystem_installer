@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+
+  web:
+    restart: always
+    build: './app'
+    volumes:
+      - /src
+      - static:/src/hrsystem/static
+      - media:/src/hrsystem/media
+    environment:
+      - DJANGO_SETTINGS_MODULE=hrsystem.settings.local
+    networks:
+      - nginx_network
+      - hrsystem_network  # <-- connect to the bridge
+    depends_on:  # <-- wait for db to be "ready" before starting the app
+      - hrsystemdb
+
+  nginx:
+    restart: always
+    build: ./nginx/
+    ports:
+      - "8000:80"
+    volumes:
+      - static:/static
+      - media:/media
+    depends_on:
+      - web
+    networks:
+      - nginx_network
+
+  hrsystemdb:
+    restart: always
+    image: postgres:9.6.0
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    networks:  # <-- connect to the bridge
+      - hrsystem_network
+    volumes:
+      - /var/lib/postgresql/data
+
+networks:
+  nginx_network:
+    driver: bridge
+  hrsystem_network:  # <-- add the bridge
+    driver: bridge
+
+volumes:
+  static:
+  media:

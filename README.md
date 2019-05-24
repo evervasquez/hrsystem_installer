@@ -10,11 +10,11 @@
 
 
 
-#### Install
+#### Install HRSystem
 Buscamos el git-bash e iniciamos una sesión
 ```
 $ cd /carpeta-donde-esta-hrsystem
 $ git clone https://github.com/evervasquez/hrsystem_installer.git hrsystem
 $ cd hrsystem
-
-
+$ docker-compose up
+```

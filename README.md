@@ -23,9 +23,11 @@ $ docker-compose up
 #### List container
 ```
 $ docker ps
+```
 
 #### Migrations Django
 ```
 $ docker exec -i -t [name-container] /bin/bash
 ```
+
 `name-container => nombre del container donde esta el proyecto de django`
